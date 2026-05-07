@@ -1,275 +1,116 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus objetivos do ano | Lorena</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            padding: 3rem 1.5rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Cabeçalho principal */
-        h1 {
-            font-size: 3.5rem;
-            text-align: center;
-            color: white;
-            margin-bottom: 3rem;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-        }
-
-        h1::after {
-            content: "_";
-            animation: piscar 1s infinite;
-        }
-
-        @keyframes piscar {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Grid de cards */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        /* Cada objetivo */
-        .objetivo-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 1.5rem;
-            padding: 1.8rem;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            backdrop-filter: blur(2px);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .objetivo-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 40px rgba(0,0,0,0.3);
-        }
-
-        .objetivo-card h2 {
-            color: #2c3e66;
-            font-size: 1.6rem;
-            margin-bottom: 1rem;
-            border-left: 5px solid #764ba2;
-            padding-left: 1rem;
-        }
-
-        .descricao {
-            color: #4a5568;
-            font-size: 0.95rem;
-            margin-bottom: 1.8rem;
-            line-height: 1.4;
-            font-weight: 500;
-        }
-
-        /* Timer */
-        .timer-box {
-            background: #f0f2f5;
-            border-radius: 1rem;
-            padding: 1rem;
-            margin: 1rem 0;
-            text-align: center;
-        }
-
-        .timer-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            font-weight: bold;
-            color: #5a5a7a;
-            letter-spacing: 1px;
-            margin-bottom: 0.8rem;
-        }
-
-        .tempo-numeros {
-            display: flex;
-            justify-content: space-between;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tempo-bloco {
-            background: white;
-            padding: 0.5rem;
-            border-radius: 0.8rem;
-            min-width: 60px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .tempo-bloco span:first-child {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #4a2c6d;
-            display: block;
-            line-height: 1;
-        }
-
-        .tempo-bloco span:last-child {
-            font-size: 0.7rem;
-            color: #666;
-            text-transform: uppercase;
-        }
-
-        .footer-card {
-            margin-top: auto;
-            text-align: right;
-            font-size: 0.7rem;
-            color: #aaa;
-            border-top: 1px solid #eee;
-            padding-top: 1rem;
-        }
-
-        @media (max-width: 680px) {
-            h1 { font-size: 2.3rem; }
-            .tempo-bloco span:first-child { font-size: 1.2rem; }
-            .objetivo-card { padding: 1.2rem; }
-        }
-    </style>
+    <title>Meus objetivos do ano</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<div class="container">
-    <h1>Meus objetivos do ano</h1>
-
-    <div class="cards-grid" id="objetivosContainer"></div>
-</div>
-
-<script>
-    // Definição dos objetivos (conforme o site original)
-    const objetivosData = [
-        {
-            titulo: "Estudar 4 cursos na Alura",
-            descricao: "Completar quatro cursos completos na plataforma Alura, com foco em desenvolvimento web e produtividade."
-        },
-        {
-            titulo: "Criar 5 projetos em Javascript",
-            descricao: "Desenvolver cinco projetos funcionais utilizando JavaScript puro, aplicando lógica e interatividade."
-        },
-        {
-            titulo: "Criar um portfolio com os meus 3 melhores projetos",
-            descricao: "Selecionar os três projetos mais relevantes e montar um portfólio profissional online."
-        },
-        {
-            titulo: "Atualizar meu currículo com os certificados da Alura",
-            descricao: "Obter os certificados e reorganizar o currículo destacando as novas competências técnicas."
-        }
-    ];
-
-    // Função para calcular tempo restante até uma data alvo (exemplo: 31/12/2025)
-    function getTempoRestante(dataAlvo) {
-        const agora = new Date();
-        const diferenca = dataAlvo - agora;
-
-        if (diferenca <= 0) {
-            return { dias: 0, horas: 0, minutos: 0, segundos: 0 };
-        }
-
-        const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-        const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
-        const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
-
-        return { dias, horas, minutos, segundos };
-    }
-
-    // Data fixa para contagem regressiva: fim do ano corrente (ou próximo ano)
-    // Vamos definir como 31 de dezembro do ano atual às 23:59:59
-    function getDataAlvoPadrao() {
-        const agora = new Date();
-        let anoAlvo = agora.getFullYear();
-        // Se já passou de dezembro? (nunca, mas garantir) - nesse caso mira ano seguinte
-        if (agora.getMonth() === 11 && agora.getDate() > 31) anoAlvo++; // só segurança
-        return new Date(anoAlvo, 11, 31, 23, 59, 59);
-    }
-
-    let dataAlvoGlobal = getDataAlvoPadrao();
-
-    // Função para renderizar todos os cards e iniciar timers atualizáveis
-    function renderizarObjetivos() {
-        const container = document.getElementById('objetivosContainer');
-        if (!container) return;
-
-        // Limpa o container
-        container.innerHTML = '';
-
-        objetivosData.forEach((obj, index) => {
-            // Cria o card
-            const card = document.createElement('div');
-            card.className = 'objetivo-card';
-            card.setAttribute('data-index', index);
-
-            // Estrutura interna
-            card.innerHTML = `
-                <h2>${obj.titulo}</h2>
-                <div class="descricao">${obj.descricao}</div>
-                <div class="timer-box">
-                    <div class="timer-label">⏳ Tempo para completar o objetivo</div>
-                    <div class="tempo-numeros" id="timer-${index}">
-                        <div class="tempo-bloco"><span>0</span><span>dias</span></div>
-                        <div class="tempo-bloco"><span>0</span><span>horas</span></div>
-                        <div class="tempo-bloco"><span>0</span><span>min</span></div>
-                        <div class="tempo-bloco"><span>0</span><span>seg</span></div>
+    <section class="conteudo-principal">
+        <h2 class="titulo-principal">Meus objetivos do ano<span>_</span></h2>
+        <div class="conteudo">
+            <div class="botoes">
+                <button class="botao ativo">Cursos na Alura</button>
+                <button class="botao">Criar projetos em Javascript</button>
+                <button class="botao">Criar um portfolio</button>
+                <button class="botao">Atualizar meu currículo</button>
+            </div>
+            <div class="abas-textos">
+                <div class="aba-conteudo ativo">
+                    <h3 class="aba-conteudo-titulo-principal">Estudar 4 cursos na Alura</h3>
+                    <h4 class="aba-conteudo-titulo-secundario">Tempo para completar o objetivo</h4>
+                    <div class="contador">
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="dias0"></p>
+                            <p class="contador-digito-texto">dias</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="horas0"></p>
+                            <p class="contador-digito-texto">horas</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="min0"></p>
+                            <p class="contador-digito-texto">min</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="seg0"></p>
+                            <p class="contador-digito-texto">seg</p>
+                        </div>
                     </div>
                 </div>
-                <div class="footer-card">🎯 foco e consistência</div>
-            `;
-
-            container.appendChild(card);
-        });
-    }
-
-    // Atualiza todos os timers com base na data alvo global
-    function atualizarTodosTimers() {
-        const restante = getTempoRestante(dataAlvoGlobal);
-
-        for (let i = 0; i < objetivosData.length; i++) {
-            const timerDiv = document.getElementById(`timer-${i}`);
-            if (timerDiv) {
-                const blocos = timerDiv.querySelectorAll('.tempo-bloco span:first-child');
-                if (blocos.length >= 4) {
-                    blocos[0].innerText = restante.dias;
-                    blocos[1].innerText = restante.horas;
-                    blocos[2].innerText = restante.minutos;
-                    blocos[3].innerText = restante.segundos;
-                }
-            }
-        }
-    }
-
-    // Inicialização e contagem regressiva
-    function iniciarRelogio() {
-        atualizarTodosTimers();
-        setInterval(() => {
-            atualizarTodosTimers();
-        }, 1000);
-    }
-
-    // (Opcional) permitir que a data alvo seja definida dinamicamente (ex: ano novo)
-    // Mantém o comportamento igual ao site: contagem decrescente para final do ano.
-    window.addEventListener('DOMContentLoaded', () => {
-        renderizarObjetivos();
-        iniciarRelogio();
-    });
-</script>
+                <div class="aba-conteudo">
+                    <h3 class="aba-conteudo-titulo-principal">Criar 5 projetos em Javascript</h3>
+                    <h4 class="aba-conteudo-titulo-secundario">Tempo para completar o objetivo</h4>
+                    <div class="contador">
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="dias1"></p>
+                            <p class="contador-digito-texto">dias</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="horas1"></p>
+                            <p class="contador-digito-texto">horas</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="min1"></p>
+                            <p class="contador-digito-texto">min</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="seg1"></p>
+                            <p class="contador-digito-texto">seg</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="aba-conteudo">
+                    <h3 class="aba-conteudo-titulo-principal">Criar um portfolio com os meus 3 melhores projetos</h3>
+                    <h4 class="aba-conteudo-titulo-secundario">Tempo para completar o objetivo</h4>
+                    <div class="contador">
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="dias2"></p>
+                            <p class="contador-digito-texto">dias</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="horas2"></p>
+                            <p class="contador-digito-texto">horas</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="min2"></p>
+                            <p class="contador-digito-texto">min</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="seg2"></p>
+                            <p class="contador-digito-texto">seg</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="aba-conteudo">
+                    <h3 class="aba-conteudo-titulo-principal">Atualizar meu curriculo com os certificados da Alura</h3>
+                    <h4 class="aba-conteudo-titulo-secundario">Tempo para completar o objetivo</h4>
+                    <div class="contador">
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="dias3"></p>
+                            <p class="contador-digito-texto">dias</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="horas3"></p>
+                            <p class="contador-digito-texto">horas</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="min3"></p>
+                            <p class="contador-digito-texto">min</p>
+                        </div>
+                        <div class="contador-digito">
+                            <p class="contador-digito-numero" id="seg3"></p>
+                            <p class="contador-digito-texto">seg</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="main.js"></script>
 </body>
+
 </html>
